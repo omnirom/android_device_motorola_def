@@ -98,7 +98,6 @@ public class KeyHandler implements DeviceKeyHandler {
     private CameraManager mCameraManager;
     private String mRearCameraId;
     private boolean mTorchEnabled;
-    private Sensor mProximitySensor;
     private Vibrator mVibrator;
     private int mProximityTimeOut;
     private boolean mProximityWakeSupported;
@@ -110,8 +109,6 @@ public class KeyHandler implements DeviceKeyHandler {
     private boolean screenOffGesturePending = false;
     private boolean fpGesturePending = false;
     private SettingsObserver mSettingsObserver;
-    private static final String DT2W_CONTROL_PATH = "/sys/class/sensors/dt-gesture/enable";
-    private static final String DT2W_WAKEUP_PATH = "/sys/class/sensors/dt-gesture/enable";
     private boolean mUseProxiCheck;
     private boolean mDoubleTapToWake;
     private boolean mAODEnabled;
@@ -201,15 +198,6 @@ public class KeyHandler implements DeviceKeyHandler {
             mAODEnabled = Settings.Secure.getIntForUser(
                     mContext.getContentResolver(), Settings.Secure.DOZE_ALWAYS_ON, 1,
                     UserHandle.USER_CURRENT) == 1;
-            updateDoubleTapToWake();
-        }
-    }
-
-    private void updateDoubleTapToWake() {
-        Log.i(TAG, "udateDoubleTapToWake " + mDoubleTapToWake);
-        if (FileUtils.isFileReadable(DT2W_CONTROL_PATH)) {
-            FileUtils.writeLine(DT2W_CONTROL_PATH, mDoubleTapToWake ? "1" : "0");
-            FileUtils.writeLine(DT2W_WAKEUP_PATH, mDoubleTapToWake ? "1" : "0");
         }
     }
 
